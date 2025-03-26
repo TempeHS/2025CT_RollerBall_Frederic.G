@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
      public float speed = 0;
      public TextMeshProUGUI countText;
      public GameObject winTextObject;
+
+     public float leap = 5;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour
         movementX = movementVector.x;
         movementY = movementVector.y;
    }
-   
+  
    
    void SetCountText()
    {
@@ -42,11 +44,24 @@ public class PlayerController : MonoBehaviour
       Destroy(GameObject.FindGameObjectWithTag("Enemy"));
     }
    }
-   private void FixedUpdate()
-   {
-     Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
-     rb.AddForce(movement*speed);
-   }
+   void FixedUpdate ()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis ("Vertical");
+
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+        GetComponent<Rigidbody>().AddForce (movement * speed * Time.deltaTime);
+
+        {
+            if (Input.GetKeyDown ("space") && GetComponent<Rigidbody>().transform.position.y <= 0.6250001f) {
+                Vector3 jump = new Vector3 (0.0f, 200.0f*leap, 0.0f);
+
+                GetComponent<Rigidbody>().AddForce (jump);
+            }
+        }
+
+    }
    private void OnTriggerEnter(Collider other)
    {
     if(other.gameObject.CompareTag("Pickup"))

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BouncePad : MonoBehaviour
 {
-    public float bounceForce = 10f; // Adjust to control bounce height
+    public float bounceForce = 30; // Adjust to control bounce height
 
     private void OnCollisionEnter(Collision collision)
     {
